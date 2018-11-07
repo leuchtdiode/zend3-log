@@ -1,0 +1,31 @@
+{
+	"name": "leuchtdiode/zend3-log",
+	"description": "Zend Framework 3 module for logging",
+	"type": "library",
+	"license": "MIT",
+	"homepage": "https://try2catch.com",
+	"authors": [
+		{
+			"name": "Alex Schloegl",
+			"email": "alex@try2catch.com",
+			"homepage": "https://try2catch.com",
+			"role": "Developer"
+		}
+	],
+	"keywords": [
+		"Zend Framework 3",
+		"Module",
+		"Log"
+	],
+	"require": {
+		"php": ">=7.1",
+		"psr/log": "^1.0",
+		"leuchtdiode/zend3-common": "^0.1",
+		"monolog/monolog": "^1.24"
+	},
+	"autoload": {
+		"psr-4": {
+			"Log\\": "src/"
+		}
+	}
+}
