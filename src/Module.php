@@ -1,6 +1,10 @@
 <?php
 namespace Log;
 
+use Common\Module\PluginChain;
+use Log\ModulePlugin\GlobalLogPlugin;
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
 	/**
@@ -9,5 +13,31 @@ class Module
 	public function getConfig()
 	{
 		return include __DIR__ . '/../config/module.config.php';
+	}
+
+	/**
+	 * @param MvcEvent $e
+	 */
+	public function onBootstrap(MvcEvent $e)
+	{
+		$eventManager 	= $e->getApplication()->getEventManager();
+		$serviceManager = $e->getApplication()->getServiceManager();
+
+		$eventManager->attach(MvcEvent::EVENT_ROUTE, function() use ($serviceManager)
+		{
+			PluginChain::create()
+				->addPlugin($serviceManager->get(GlobalLogPlugin::class))
+				->executeAll();
+		});
+
+		$eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($serviceManager)
+		{
+			if ($e->getError() == 'error-exception')
+			{
+				Log::error(
+					$e->getParam('exception')
+				);
+			}
+		});
 	}
 }
