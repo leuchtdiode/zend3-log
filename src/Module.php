@@ -32,11 +32,9 @@ class Module
 
 		$eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($serviceManager)
 		{
-			if ($e->getError() == 'error-exception')
+			if (($exception = $e->getParam('exception')))
 			{
-				Log::error(
-					$e->getParam('exception')
-				);
+				Log::error($exception);
 			}
 		});
 	}
